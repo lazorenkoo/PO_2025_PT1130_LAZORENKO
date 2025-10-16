@@ -50,9 +50,16 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "lab1",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/OOP/PO_2025_PT1130_LAZORENKO/oolab/src/main/java/agh/ics/oop/model",
     "onboarding.tips.debug.path": "D:/OOP/PO_2025_PT1130_LAZORENKO/oolab/src/main/java/org/example/Main.java"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OOP\PO_2025_PT1130_LAZORENKO\oolab\src\main\java\agh\ics\oop\model" />
+      <recent name="D:\OOP\PO_2025_PT1130_LAZORENKO\oolab\src\main\java\agh\ics\oop" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="World" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="agh.ics.oop.World" />
