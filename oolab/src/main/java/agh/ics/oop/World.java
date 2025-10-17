@@ -13,12 +13,13 @@ public class World {
     }
     public static void run(MoveDirection[] moves) {
         for (MoveDirection m : moves) {
-            switch (m) {
-                case FORWARD  -> System.out.println("zwierzak idzie do przodu");
-                case BACKWARD -> System.out.println("zwierzak idzie do tyłu");
-                case LEFT     -> System.out.println("zwierzak skręca w lewo");
-                case RIGHT    -> System.out.println("zwierzak skręca w prawo");
-            }
+            String out = switch (m) {
+                case FORWARD  -> "zwierzak idzie do przodu";
+                case BACKWARD -> "zwierzak idzie do tyłu";
+                case LEFT     -> "zwierzak skręca w lewo";
+                case RIGHT    -> "zwierzak skręca w prawo";
+            };
         }
+        System.out.println(out);
     }
 }
