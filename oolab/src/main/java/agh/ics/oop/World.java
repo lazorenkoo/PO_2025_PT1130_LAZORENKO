@@ -4,8 +4,6 @@ import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.MapDirection;
 
-import java.awt.image.ImageProducer;
-import java.util.Map;
 
 
 public class World {
