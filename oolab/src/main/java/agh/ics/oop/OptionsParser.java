@@ -1,8 +1,6 @@
 package agh.ics.oop;
 import agh.ics.oop.model.MoveDirection;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class OptionsParser {
     public static MoveDirection[] parse(String[] args){
@@ -17,7 +15,7 @@ public class OptionsParser {
                 case "l" ->  MoveDirection.LEFT;
                 default -> null;
             };
-            if(out[validMove] == null){
+            if(out[validMove] != null){
                 validMove++;
             }
         }

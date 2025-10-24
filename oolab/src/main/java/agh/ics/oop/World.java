@@ -1,10 +1,54 @@
 package agh.ics.oop;
+
 import agh.ics.oop.model.MoveDirection;
+import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.MapDirection;
+
 
 
 public class World {
 
     public static void main(String[] args) {
+        // Vector2d position1 = new Vector2d(1,2);
+        // System.out.println(position1);
+        // Vector2d position2 = new Vector2d(-2,1);
+        // System.out.println(position2);
+        // System.out.println(position1.add(position2));
+
+        //System.out.println(MapDirection.WEST);
+        //System.out.println(MapDirection.SOUTH);
+        //System.out.println(MapDirection.NORTH);
+        //System.out.println(MapDirection.EAST);
+        // MapDirection d = MapDirection.NORTH;
+        // d = d.next();
+        // System.out.println(d);
+        // d= d.next();
+        // System.out.println(d);
+        // d= d.next();
+       //  System.out.println(d);
+       //  d= d.next();
+        // System.out.println(d);
+        //MapDirection d = MapDirection.NORTH;
+         //d = d.previous();
+        // System.out.println(d);
+        // d= d.previous();
+         //System.out.println(d);
+        // d= d.previous();
+        //  System.out.println(d);
+       //   d= d.previous();
+       //  System.out.println(d);
+
+        MapDirection d = MapDirection.NORTH;
+        System.out.println(d.toUnitVector());
+        d= d.next();
+        System.out.println(d.toUnitVector());
+        d =d.next();
+        System.out.println(d.toUnitVector());
+        d= d.next();
+        System.out.println(d.toUnitVector());
+
+
+
         System.out.println("Start");
         MoveDirection[] moves = OptionsParser.parse(args);
         run(moves);
@@ -19,7 +63,7 @@ public class World {
                 case LEFT     -> "zwierzak skręca w lewo";
                 case RIGHT    -> "zwierzak skręca w prawo";
             };
-        }
         System.out.println(out);
+        }
     }
 }
