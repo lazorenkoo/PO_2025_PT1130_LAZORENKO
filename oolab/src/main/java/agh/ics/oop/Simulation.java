@@ -24,4 +24,5 @@ public class Simulation {
             System.out.println("Zwierzę " + idx + " : " + a.toString());
         }
     }
+    public List<Animal> getAnimals() { return animals; }
 }
