@@ -9,21 +9,14 @@ import agh.ics.oop.model.Vector2d;
  *
  * @author apohllo, idzik
  */
-public interface WorldMap extends MoveValidator {
+public interface WorldMap<T, P> {
 
-    /**
-     * Place a new animal on the map.
-     *
-     * @param animal The animal to be placed on the map.
-     * @return True if the animal was placed. The rules for valid placement are the same as for movement.
-     */
-    boolean place(Animal animal);
-
+    boolean place(T object, P position);
     /**
      * Moves an animal (if it is present on the map) according to specified direction.
      * If the move is not possible, this method has no effect.
      */
-    void move(Animal animal, MoveDirection direction);
+    void move(T object, MoveDirection direction);
 
     /**
      * Return true if given position on the map is occupied. Should not be
@@ -33,7 +26,7 @@ public interface WorldMap extends MoveValidator {
      * @param position Position to check.
      * @return True if the position is occupied.
      */
-    boolean isOccupied(Vector2d position);
+    boolean isOccupied(P position);
 
     /**
      * Return an animal at a given position.
@@ -41,5 +34,5 @@ public interface WorldMap extends MoveValidator {
      * @param position The position of the animal.
      * @return animal or null if the position is not occupied.
      */
-    Animal objectAt(Vector2d position);
+    T objectAt(P position);
 }
