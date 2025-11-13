@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
+import agh.ics.oop.model.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,63 +14,140 @@ class SimulationTest {
         return OptionsParser.parse(raw);
     }
 
+
     @Test
-    @DisplayName("NORTH (2,2) -- kończy w (3,1)")
+    @DisplayName("boundaries")
+    void boundaries() {
+        // given
+        var map = new RectangularMap(5, 5);
+        var sim = new Simulation(map, List.of(new Vector2d(0, 0)), parse("b", "l", "f"));
+
+        // when
+        sim.run();
+
+        // then
+        assertNotNull(map.objectAt(new Vector2d(0, 0)));
+        // nic nie pojawiło się poza mapą
+        assertFalse(map.isOccupied(new Vector2d(-1, 0)));
+        assertFalse(map.isOccupied(new Vector2d(0, -1)));
+    }
+
+    @Test
+    @DisplayName("orientation + movement")
     void orientationAndMovement() {
-        // Given
-        var positions = List.of(new Vector2d(2, 2));
-        var moves = parse("r", "f", "right", "forward");
+        // given
+        var map = new RectangularMap(5, 5);
+        var sim = new Simulation(map, List.of(new Vector2d(2, 2)), parse("r", "f", "right", "forward"));
 
-        // When
-        var sim = new Simulation(positions, moves);
+        // when
         sim.run();
 
-        // Then
-        Animal a0 = sim.getAnimals().get(0);
-        assertTrue(a0.isAt(new Vector2d(3, 1)));
+        // then
+        assertNotNull(map.objectAt(new Vector2d(3, 1)));
     }
 
     @Test
-    @DisplayName("r,f,r,f,r,f,r,f --  pelny cykl orientacji wraca do (2,2)")
+    @DisplayName("orientation cycle")
     void orientationCycle() {
-        var positions = List.of(new Vector2d(2, 2));
-        var moves = parse("r","f","r","f","r","f","r","f");
-
-        var sim = new Simulation(positions, moves);
-        sim.run();
-        //Po 4x(RIGHT,FORWARD) pozycja powinna wrocic do punktu startowego (2,2)
-        assertTrue(sim.getAnimals().get(0).isAt(new Vector2d(2, 2)));
-    }
-
-    @Test
-    @DisplayName("Given (0,0) -- nie wychodzi poza mapę (0,0)")
-    void boundary() {
-        var sim = new Simulation(List.of(new Vector2d(0, 0)), parse("b", "l", "f"));
-        sim.run();
-        //Proby wyjscia poza mapę są ignorowane -- zostaje (0,0)"
-        assertTrue(sim.getAnimals().get(0).isAt(new Vector2d(0, 0)));
-    }
-
-    @Test
-    @DisplayName("2 zwierzęta")
-    void round() {
+        // given
+        var map = new RectangularMap(5, 5);
         var sim = new Simulation(
+                map,
+                List.of(new Vector2d(2, 2)),
+                parse("r","f","r","f","r","f","r","f")
+        );
+
+        // when
+        sim.run();
+
+        // then
+        assertNotNull(map.objectAt(new Vector2d(2, 2)));
+    }
+
+    @Test
+    @DisplayName("roundRobinTwoAnimals")
+    void roundRobinTwoAnimals() {
+        // given
+        var map = new RectangularMap(5, 5);
+        var sim = new Simulation(
+                map,
                 List.of(new Vector2d(2, 2), new Vector2d(3, 4)),
                 parse("f", "f", "r", "f", "b")
         );
+
+        // when
         sim.run();
 
-        // #0: f -> (2,3); r -> obrot; b przy EAST -> (1,3)
-        // #1: f -> proba (3,5) -> granica => (3,4); f -> znow sciana => (3,4)
-        assertTrue(sim.getAnimals().get(0).isAt(new Vector2d(1, 3)));
-        assertTrue(sim.getAnimals().get(1).isAt(new Vector2d(3, 4)));
+        // then (#0 -> (1,3), #1 zostaje (3,4))
+        assertNotNull(map.objectAt(new Vector2d(1, 3)));
+        assertNotNull(map.objectAt(new Vector2d(3, 4)));
     }
 
     @Test
-    @DisplayName("Parser -- ignoruje zle i mapuje dobre")
+    @DisplayName("upper-right boundaries")
+    void upperRightBoundaries() {
+        // given
+        var map = new RectangularMap(5, 5);
+        var sim = new Simulation(map, List.of(new Vector2d(4, 4)), parse("f","r","f"));
+
+        // when
+        sim.run();
+
+        // then
+        assertNotNull(map.objectAt(new Vector2d(4, 4)));
+        // rogi za mapą puste
+        assertFalse(map.isOccupied(new Vector2d(5, 4)));
+        assertFalse(map.isOccupied(new Vector2d(4, 5)));
+    }
+
+    @Test
+    @DisplayName("parser")
     void parser() {
-        var moves = OptionsParser.parse(new String[]{"x", "l", "foo", "BACKWARD", "b"});
-        assertEquals(2, moves.size());
+        // given
+        var raw = new String[]{"x", "l", "foo", "BACKWARD", "b"};
+
+        // when
+        var moves = OptionsParser.parse(raw);
+
+        // then
         assertEquals(List.of(MoveDirection.LEFT, MoveDirection.BACKWARD), moves);
+    }
+
+
+    @Test
+    @DisplayName("place")
+    void cannotPlaceOnOccupiedStart() {
+        // given
+        var map = new RectangularMap(5, 5);
+        var a1 = new Animal(new Vector2d(2, 2));
+        var a2 = new Animal(new Vector2d(2, 2));
+
+        // when
+        var ok1 = map.place(a1);
+        var ok2 = map.place(a2);
+
+        // then
+        assertTrue(ok1);
+        assertFalse(ok2);
+        assertSame(a1, map.objectAt(new Vector2d(2, 2)));
+    }
+
+    @Test
+    @DisplayName("move")
+    void cannotEnterOccupiedCell() {
+        // given
+        var map = new RectangularMap(5, 5);
+        var a1 = new Animal(new Vector2d(2, 2)); // NORTH
+        var a2 = new Animal(new Vector2d(2, 3)); // stoi nad a1
+
+        assertTrue(map.place(a1));
+        assertTrue(map.place(a2));
+
+        // when
+        map.move(a1, MoveDirection.FORWARD);
+
+        // then
+        assertSame(a2, map.objectAt(new Vector2d(2, 3)));
+        assertSame(a1, map.objectAt(new Vector2d(2, 2)));
     }
 }
