@@ -5,6 +5,7 @@ import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.Animal;
 import agh.ics.oop.model.RectangularMap;
+import agh.ics.oop.model.TextMap;
 
 
 import java.util.List;
@@ -52,11 +53,28 @@ public class World {
         // d= d.next();
         // System.out.println(d.toUnitVector());
 
-        List<MoveDirection> directions = OptionsParser.parse(args);
-        RectangularMap map = new RectangularMap(5, 5);
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        Simulation simulation = new Simulation(map, positions, directions);
-        simulation.run();
+        // Symulacja zwierząt 2D
+        var animalMap = new RectangularMap(5, 5);
+        var animals   = List.of(
+                new Animal(new Vector2d(2,2)),
+                new Animal(new Vector2d(3,4))
+        );
+        var positions = List.of(
+                new Vector2d(2,2),
+                new Vector2d(3,4)
+        );
+        var moves     = OptionsParser.parse(args);
+        new Simulation<Animal, Vector2d>(
+                animalMap, animals, positions, moves
+        ).run();
+
+// Symulacja napisów 1D
+        var textMap   = new TextMap();
+        var words     = List.of("Ala", "ma", "sowoniedźwiedzia");
+        var indexes   = List.of(0, 1, 2);
+        var movesText = OptionsParser.parse(new String[]{"f", "f", "b", "r", "l"});
+        new Simulation<String, Integer>(textMap, words, indexes, movesText).run();
+
 
     }
     public static void run(List<MoveDirection> moves) {
