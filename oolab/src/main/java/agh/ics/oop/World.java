@@ -4,6 +4,8 @@ import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
 import agh.ics.oop.model.MapDirection;
 import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.RectangularMap;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -50,14 +52,11 @@ public class World {
         // d= d.next();
         // System.out.println(d.toUnitVector());
 
-        System.out.println("system wystartował");
-
         List<MoveDirection> directions = OptionsParser.parse(args);
+        RectangularMap map = new RectangularMap(5, 5);
         List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        Simulation simulation = new Simulation(positions, directions);
+        Simulation simulation = new Simulation(map, positions, directions);
         simulation.run();
-
-        System.out.println("system zakończył działanie");
 
     }
     public static void run(List<MoveDirection> moves) {
