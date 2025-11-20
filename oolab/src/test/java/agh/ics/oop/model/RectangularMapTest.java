@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RectangularMapTest {
 
     @Test
-    @DisplayName("place() – można postawić zwierzę na wolnym polu")
+    @DisplayName("place() mozna postawić zwierzę na wolnym polu")
     void placeOnFreeField() {
         // given
         var map = new RectangularMap(5, 5);
@@ -24,7 +24,7 @@ class RectangularMapTest {
     }
 
     @Test
-    @DisplayName("place() – nie można postawić dwóch zwierząt na tym samym polu")
+    @DisplayName("place() nie mozna postawić dwóch zwierząt na tym samym polu")
     void cannotPlaceOnOccupiedField() {
         // given
         var map = new RectangularMap(5, 5);
@@ -58,7 +58,7 @@ class RectangularMapTest {
     }
 
     @Test
-    @DisplayName("move() – poprawne przesuwanie w ramach mapy")
+    @DisplayName("move() poprawne przesuwanie w ramach mapy")
     void moveInsideBounds() {
         // given
         var map = new RectangularMap(5, 5);

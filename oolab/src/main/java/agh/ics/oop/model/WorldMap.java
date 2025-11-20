@@ -1,4 +1,5 @@
 package agh.ics.oop.model;
+import java.util.Collection;
 
 import agh.ics.oop.model.MoveDirection;
 import agh.ics.oop.model.Vector2d;
@@ -42,4 +43,6 @@ public interface WorldMap extends MoveValidator {
      * @return animal or null if the position is not occupied.
      */
     WorldElement objectAt(Vector2d position);
+
+    Collection<WorldElement> getElements();
 }

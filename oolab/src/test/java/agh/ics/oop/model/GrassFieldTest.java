@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GrassFieldTest {
 
     @Test
-    @DisplayName("place() – można postawić zwierzę na wolnym polu")
+    @DisplayName("place() mozna postawić zwierzę na wolnym polu")
     void placeOnFreeField() {
         // given
         var map = new GrassField(10);
@@ -24,7 +24,7 @@ class GrassFieldTest {
     }
 
     @Test
-    @DisplayName("place() – nie można postawić dwóch zwierząt na tym samym polu")
+    @DisplayName("place() nie mozna postawic dwóch zwierząt na tym samym polu")
     void cannotPlaceOnOccupiedField() {
         // given
         var map = new GrassField(10);
@@ -42,7 +42,7 @@ class GrassFieldTest {
     }
 
     @Test
-    @DisplayName("GrassField – brak granic, zwierzę może wyjść  poza 5x5")
+    @DisplayName("GrassField zwierzę może wyjść  poza 5x5")
     void grassFieldIsUnbounded() {
         // given
         var map = new GrassField(0);
@@ -59,7 +59,7 @@ class GrassFieldTest {
     }
 
     @Test
-    @DisplayName("objectAt() – zwierzę ma priorytet nad trawą")
+    @DisplayName("objectAt() zwierzę ma priorytet nad trawą")
     void animalHasPriorityOverGrass() {
         // given
         var map = new GrassField(10);
