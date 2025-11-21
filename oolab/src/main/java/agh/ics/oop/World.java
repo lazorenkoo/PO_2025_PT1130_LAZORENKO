@@ -1,11 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
-import agh.ics.oop.model.MapDirection;
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.RectangularMap;
-
+import agh.ics.oop.model.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -52,11 +47,23 @@ public class World {
         // d= d.next();
         // System.out.println(d.toUnitVector());
 
-        List<MoveDirection> directions = OptionsParser.parse(args);
-        RectangularMap map = new RectangularMap(5, 5);
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
-        Simulation simulation = new Simulation(map, positions, directions);
-        simulation.run();
+
+        //RectangularMap map = new RectangularMap(5, 5);
+        //List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(3,4));
+        //Simulation simulation = new Simulation(map, positions, directions);
+        //simulation.run();
+        var moves = OptionsParser.parse(args);
+        var startPositions = List.of(
+                new Vector2d(2, 2),
+                new Vector2d(3, 4)
+        );
+        WorldMap grassField = new GrassField(10);
+        var sim2 = new Simulation(grassField, startPositions, moves);
+
+        System.out.println("=== GrassField (10 traw) ===");
+        System.out.println(grassField);
+        sim2.run();
+        System.out.println(grassField);
 
     }
     public static void run(List<MoveDirection> moves) {
