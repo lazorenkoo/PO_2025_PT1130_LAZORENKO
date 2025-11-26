@@ -10,13 +10,17 @@ public class Simulation {
     private final List<Animal> animals = new ArrayList<>();
     private final List<MoveDirection> moves;
 
-    public Simulation(WorldMap map, List<Vector2d> positions, List<MoveDirection> moves) {
+    public Simulation(WorldMap map, List<Vector2d> startPositions, List<MoveDirection> moves) {
         this.map = map;
         this.moves = moves;
-        for (Vector2d p : positions) {
-            Animal a = new Animal(p);
-            if (!map.place(a)) throw new IllegalArgumentException("Pozycja zajęta/poza mapą: " + p);
-            animals.add(a);
+        for (Vector2d pos : startPositions) {
+            Animal animal = new Animal(pos);
+            try {
+                map.place(animal);
+                animals.add(animal);
+            } catch (IncorrectPositionException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 

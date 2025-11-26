@@ -8,13 +8,12 @@ public abstract class AbstractWorldMap implements WorldMap {
 
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
     @Override
-    public boolean place(Animal animal) {
+    public void place(Animal animal) throws IncorrectPositionException {
         Vector2d pos = animal.getPosition();
         if (!canMoveTo(pos)) {
-            return false;
+            throw new IncorrectPositionException(pos);
         }
         animals.put(pos, animal);
-        return true;
     }
 
     @Override
