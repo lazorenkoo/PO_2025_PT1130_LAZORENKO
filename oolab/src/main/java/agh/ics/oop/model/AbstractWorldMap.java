@@ -42,8 +42,8 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected String draw(Vector2d lowerLeft, Vector2d upperRight) {
         return new MapVisualizer(this).draw(lowerLeft, upperRight);
     }
-
-
+    @Override
+    public abstract Boundary getCurrentBounds();
     @Override
     public abstract boolean canMoveTo(Vector2d position);
 
