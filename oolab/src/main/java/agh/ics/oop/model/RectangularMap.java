@@ -23,12 +23,9 @@ public class RectangularMap extends AbstractWorldMap {
     public WorldElement objectAt(Vector2d position) {
         return animals.get(position);
     }
+
     @Override
     public Boundary getCurrentBounds() {
         return new Boundary(lowerLeft, upperRight);
-    }
-    @Override
-    public String toString() {
-        return draw(lowerLeft, upperRight);
     }
 }

@@ -72,11 +72,4 @@ public class GrassField extends AbstractWorldMap {
                 new Vector2d(maxX, maxY)
         );
     }
-    @Override
-    public String toString() {
-        Boundary b = getCurrentBounds();
-        if (b == null) return "";
-        return new MapVisualizer(this)
-                .draw(b.lowerLeft(), b.upperRight());
-    }
 }

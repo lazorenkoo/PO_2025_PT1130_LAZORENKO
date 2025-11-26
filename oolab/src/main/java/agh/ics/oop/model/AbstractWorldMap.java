@@ -7,6 +7,7 @@ import java.util.*;
 public abstract class AbstractWorldMap implements WorldMap {
 
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
+
     @Override
     public void place(Animal animal) throws IncorrectPositionException {
         Vector2d pos = animal.getPosition();
@@ -34,22 +35,27 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public Collection<WorldElement> getElements() {
+    public java.util.Collection<WorldElement> getElements() {
         return new ArrayList<>(animals.values());
     }
 
 
-    protected String draw(Vector2d lowerLeft, Vector2d upperRight) {
-        return new MapVisualizer(this).draw(lowerLeft, upperRight);
+    @Override
+    public final String toString() {
+        Boundary bounds = getCurrentBounds();
+        if (bounds == null) {
+            return "";
+        }
+        return new MapVisualizer(this)
+                .draw(bounds.lowerLeft(), bounds.upperRight());
     }
+
     @Override
     public abstract Boundary getCurrentBounds();
+
     @Override
     public abstract boolean canMoveTo(Vector2d position);
 
     @Override
     public abstract WorldElement objectAt(Vector2d position);
-
-    @Override
-    public abstract String toString();
 }
