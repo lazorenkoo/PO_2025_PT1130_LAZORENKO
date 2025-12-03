@@ -30,15 +30,18 @@ class OptionsParserTest {
     @Test
     @DisplayName("invalid -> returns all valid in order")
 
-    void Invalid() {
+    void invalid() {
+        // Given
+        String[] args = {"f", "b", "lalala", "l"};
+
         // When
-        var result = OptionsParser.parse(new String[]{"f", "b", "lalala", "l"});
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> OptionsParser.parse(args)
+        );
 
         // Then
-        assertEquals(List.of(
-                MoveDirection.FORWARD,
-                MoveDirection.BACKWARD,
-                MoveDirection.LEFT), result);
+        assertTrue(ex.getMessage().contains("lalala is not legal move specification"));
     }
 
 

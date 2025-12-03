@@ -30,17 +30,19 @@ public abstract class AbstractWorldMap implements WorldMap {
             throw new IncorrectPositionException(pos);
         }
         animals.put(pos, animal);
+        mapChanged("Placed animal at " + pos);
     }
 
     @Override
     public void move(Animal animal, MoveDirection direction) {
         Vector2d before = animal.getPosition();
         animal.move(direction, this);
-
         Vector2d after = animal.getPosition();
+
         if (!before.equals(after)) {
             animals.remove(before);
             animals.put(after, animal);
+            mapChanged("Animal moved from " + before + " to " + after);
         }
     }
 
@@ -50,7 +52,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     }
 
     @Override
-    public java.util.Collection<WorldElement> getElements() {
+    public Collection<WorldElement> getElements() {
         return new ArrayList<>(animals.values());
     }
 
