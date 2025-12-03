@@ -32,7 +32,7 @@ public class World {
         }
 
         SimulationEngine engine = new SimulationEngine(list);
-        engine.runAsync();
+        engine.runAsyncInThreadPool();
         engine.awaitSimulationsEnd();
     }
 }
