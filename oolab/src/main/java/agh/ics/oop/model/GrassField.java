@@ -1,6 +1,7 @@
 package agh.ics.oop.model;
 
 import java.util.*;
+import agh.ics.oop.model.util.MapVisualizer;
 
 public class GrassField extends AbstractWorldMap {
 
@@ -47,10 +48,10 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public String toString() {
+    public Boundary getCurrentBounds() {
         Collection<WorldElement> elements = getElements();
         if (elements.isEmpty()) {
-            return "";
+            return null;
         }
 
         int minX = Integer.MAX_VALUE;
@@ -66,9 +67,9 @@ public class GrassField extends AbstractWorldMap {
             if (p.getY() > maxY) maxY = p.getY();
         }
 
-        Vector2d lowerLeft  = new Vector2d(minX, minY);
-        Vector2d upperRight = new Vector2d(maxX, maxY);
-
-        return draw(lowerLeft, upperRight);
+        return new Boundary(
+                new Vector2d(minX, minY),
+                new Vector2d(maxX, maxY)
+        );
     }
 }

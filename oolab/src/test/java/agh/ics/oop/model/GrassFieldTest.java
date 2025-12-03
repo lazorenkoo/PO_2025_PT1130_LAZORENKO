@@ -8,42 +8,41 @@ import static org.junit.jupiter.api.Assertions.*;
 class GrassFieldTest {
 
     @Test
-    @DisplayName("place() mozna postawić zwierzę na wolnym polu")
-    void placeOnFreeField() {
+    @DisplayName("place() można postawić zwierzę na wolnym polu")
+    void placeOnFreeField() throws IncorrectPositionException {
         // given
         var map = new GrassField(10);
         var animal = new Animal(new Vector2d(2, 2));
 
         // when
-        boolean placed = map.place(animal);
+        map.place(animal);
 
         // then
-        assertTrue(placed);
         assertSame(animal, map.objectAt(new Vector2d(2, 2)));
         assertTrue(map.isOccupied(new Vector2d(2, 2)));
     }
 
     @Test
-    @DisplayName("place() nie mozna postawic dwóch zwierząt na tym samym polu")
-    void cannotPlaceOnOccupiedField() {
+    @DisplayName("place() nie można postawić dwóch zwierząt na tym samym polu")
+    void cannotPlaceOnOccupiedField() throws IncorrectPositionException {
         // given
         var map = new GrassField(10);
         var a1 = new Animal(new Vector2d(2, 2));
         var a2 = new Animal(new Vector2d(2, 2));
 
-        // when
-        boolean first = map.place(a1);
-        boolean second = map.place(a2);
+        map.place(a1);
 
-        // then
-        assertTrue(first);
-        assertFalse(second);
+        // when + then
+        assertThrows(
+                IncorrectPositionException.class,
+                () -> map.place(a2)
+        );
         assertSame(a1, map.objectAt(new Vector2d(2, 2)));
     }
 
     @Test
-    @DisplayName("GrassField zwierzę może wyjść  poza 5x5")
-    void grassFieldIsUnbounded() {
+    @DisplayName("GrassField zwierzę może wyjść poza 5x5")
+    void grassFieldIsUnbounded() throws IncorrectPositionException {
         // given
         var map = new GrassField(0);
         var animal = new Animal(new Vector2d(0, 0));
@@ -60,7 +59,7 @@ class GrassFieldTest {
 
     @Test
     @DisplayName("objectAt() zwierzę ma priorytet nad trawą")
-    void animalHasPriorityOverGrass() {
+    void animalHasPriorityOverGrass() throws IncorrectPositionException {
         // given
         var map = new GrassField(10);
 

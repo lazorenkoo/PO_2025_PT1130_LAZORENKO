@@ -8,42 +8,42 @@ import static org.junit.jupiter.api.Assertions.*;
 class RectangularMapTest {
 
     @Test
-    @DisplayName("place() mozna postawić zwierzę na wolnym polu")
-    void placeOnFreeField() {
+    @DisplayName("place() – można postawić zwierzę na wolnym polu")
+    void placeOnFreeField() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var animal = new Animal(new Vector2d(2, 2));
 
         // when
-        boolean placed = map.place(animal);
+        map.place(animal);
 
         // then
-        assertTrue(placed);
         assertSame(animal, map.objectAt(new Vector2d(2, 2)));
         assertTrue(map.isOccupied(new Vector2d(2, 2)));
     }
 
     @Test
-    @DisplayName("place() nie mozna postawić dwóch zwierząt na tym samym polu")
-    void cannotPlaceOnOccupiedField() {
+    @DisplayName("place() nie można postawić dwóch zwierząt na tym samym polu")
+    void cannotPlaceOnOccupiedField() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var a1 = new Animal(new Vector2d(2, 2));
         var a2 = new Animal(new Vector2d(2, 2));
 
         // when
-        boolean first = map.place(a1);
-        boolean second = map.place(a2);
+        map.place(a1);
 
         // then
-        assertTrue(first);
-        assertFalse(second);
+        assertThrows(
+                IncorrectPositionException.class,
+                () -> map.place(a2)
+        );
         assertSame(a1, map.objectAt(new Vector2d(2, 2)));
     }
 
     @Test
     @DisplayName("canMoveTo() – granice mapy blokują ruch")
-    void cannotMoveOutsideMap() {
+    void cannotMoveOutsideMap() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var animal = new Animal(new Vector2d(0, 0));
@@ -58,8 +58,8 @@ class RectangularMapTest {
     }
 
     @Test
-    @DisplayName("move() poprawne przesuwanie w ramach mapy")
-    void moveInsideBounds() {
+    @DisplayName("move() – poprawne przesuwanie w ramach mapy")
+    void moveInsideBounds() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var animal = new Animal(new Vector2d(2, 2));

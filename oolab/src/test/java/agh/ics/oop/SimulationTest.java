@@ -14,7 +14,6 @@ class SimulationTest {
         return OptionsParser.parse(raw);
     }
 
-
     @Test
     @DisplayName("boundaries")
     void boundaries() {
@@ -37,7 +36,11 @@ class SimulationTest {
     void orientationAndMovement() {
         // given
         var map = new RectangularMap(5, 5);
-        var sim = new Simulation(map, List.of(new Vector2d(2, 2)), parse("r", "f", "right", "forward"));
+        var sim = new Simulation(
+                map,
+                List.of(new Vector2d(2, 2)),
+                parse("r", "f", "right", "forward")
+        );
 
         // when
         sim.run();
@@ -54,7 +57,7 @@ class SimulationTest {
         var sim = new Simulation(
                 map,
                 List.of(new Vector2d(2, 2)),
-                parse("r","f","r","f","r","f","r","f")
+                parse("r", "f", "r", "f", "r", "f", "r", "f")
         );
 
         // when
@@ -88,7 +91,11 @@ class SimulationTest {
     void upperRightBoundaries() {
         // given
         var map = new RectangularMap(5, 5);
-        var sim = new Simulation(map, List.of(new Vector2d(4, 4)), parse("f","r","f"));
+        var sim = new Simulation(
+                map,
+                List.of(new Vector2d(4, 4)),
+                parse("f", "r", "f")
+        );
 
         // when
         sim.run();
@@ -101,52 +108,52 @@ class SimulationTest {
     }
 
     @Test
-    @DisplayName("parser")
+    @DisplayName("parser – niepoprawne argumenty rzucają wyjątek")
     void parser() {
         // given
         var raw = new String[]{"x", "l", "foo", "BACKWARD", "b"};
 
-        // when
-        var moves = OptionsParser.parse(raw);
-
-        // then
-        assertEquals(List.of(MoveDirection.LEFT, MoveDirection.BACKWARD), moves);
+        //  then
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> OptionsParser.parse(raw)
+        );
     }
 
-
     @Test
-    @DisplayName("place")
-    void cannotPlaceOnOccupiedStart() {
+    @DisplayName("place – nie można wystartować z dwoma zwierzętami na tym samym polu")
+    void cannotPlaceOnOccupiedStart() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var a1 = new Animal(new Vector2d(2, 2));
         var a2 = new Animal(new Vector2d(2, 2));
 
         // when
-        var ok1 = map.place(a1);
-        var ok2 = map.place(a2);
+        map.place(a1);
 
         // then
-        assertTrue(ok1);
-        assertFalse(ok2);
+        assertThrows(
+                IncorrectPositionException.class,
+                () -> map.place(a2)
+        );
         assertSame(a1, map.objectAt(new Vector2d(2, 2)));
     }
 
     @Test
-    @DisplayName("move")
-    void cannotEnterOccupiedCell() {
+    @DisplayName("move – zwierzę nie wchodzi na zajętą komórkę")
+    void cannotEnterOccupiedCell() throws IncorrectPositionException {
         // given
         var map = new RectangularMap(5, 5);
         var a1 = new Animal(new Vector2d(2, 2)); // NORTH
         var a2 = new Animal(new Vector2d(2, 3)); // stoi nad a1
 
-        assertTrue(map.place(a1));
-        assertTrue(map.place(a2));
+        map.place(a1);
+        map.place(a2);
 
-        // when
+        // when: a1 próbuje wejść w (2,3) – zajęte
         map.move(a1, MoveDirection.FORWARD);
 
-        // then
+        // then: a1 zostaje na (2,2), a2 na (2,3)
         assertSame(a2, map.objectAt(new Vector2d(2, 3)));
         assertSame(a1, map.objectAt(new Vector2d(2, 2)));
     }
