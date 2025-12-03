@@ -23,17 +23,13 @@ public class World {
         WorldMap rectangular = new RectangularMap("Rect#1", 5, 5);
         WorldMap grassField  = new GrassField("Grass#1", 10);
 
-        ConsoleMapDisplay display = new ConsoleMapDisplay();
-        ((AbstractWorldMap) rectangular).addObserver(display);
-        ((AbstractWorldMap) grassField).addObserver(display);
-
-
-        Simulation s1 = new Simulation(rectangular, startPositions, moves);
-        Simulation s2 = new Simulation(grassField,  startPositions, moves);
-
+        int simulationCount = 100;
         List<Simulation> list = new ArrayList<>();
-        list.add(s1);
-        list.add(s2);
+
+        for (int i = 0; i < simulationCount; i++) {
+            list.add(new Simulation(rectangular, startPositions, moves));
+            list.add(new Simulation(grassField,  startPositions, moves));
+        }
 
         SimulationEngine engine = new SimulationEngine(list);
         engine.runAsync();
