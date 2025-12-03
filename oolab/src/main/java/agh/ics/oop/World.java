@@ -36,6 +36,7 @@ public class World {
         list.add(s2);
 
         SimulationEngine engine = new SimulationEngine(list);
-        engine.runSync();
+        engine.runAsync();
+        engine.awaitSimulationsEnd();
     }
 }
