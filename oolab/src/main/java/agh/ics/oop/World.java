@@ -2,6 +2,7 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class World {
@@ -19,12 +20,22 @@ public class World {
                 new Vector2d(3, 4)
         );
 
-        WorldMap map = new GrassField(10);
+        WorldMap rectangular = new RectangularMap("Rect#1", 5, 5);
+        WorldMap grassField  = new GrassField("Grass#1", 10);
 
-        if (map instanceof AbstractWorldMap abstractMap) {
-            abstractMap.addObserver(new ConsoleMapDisplay());
-        }
-        Simulation simulation = new Simulation(map, startPositions, moves);
-        simulation.run();
+        ConsoleMapDisplay display = new ConsoleMapDisplay();
+        ((AbstractWorldMap) rectangular).addObserver(display);
+        ((AbstractWorldMap) grassField).addObserver(display);
+
+
+        Simulation s1 = new Simulation(rectangular, startPositions, moves);
+        Simulation s2 = new Simulation(grassField,  startPositions, moves);
+
+        List<Simulation> list = new ArrayList<>();
+        list.add(s1);
+        list.add(s2);
+
+        SimulationEngine engine = new SimulationEngine(list);
+        engine.runSync();
     }
 }

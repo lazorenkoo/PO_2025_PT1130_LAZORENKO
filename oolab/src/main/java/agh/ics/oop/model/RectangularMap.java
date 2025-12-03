@@ -6,6 +6,11 @@ public class RectangularMap extends AbstractWorldMap {
     private final Vector2d upperRight;
 
     public RectangularMap(int width, int height) {
+        this("RectangularMap", width, height);
+    }
+
+    public RectangularMap(String id, int width, int height) {
+        super(id);
         this.lowerLeft  = new Vector2d(0, 0);
         this.upperRight = new Vector2d(width - 1, height - 1);
     }
