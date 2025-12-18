@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane minHeight="550.0" minWidth="850.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.ics.oop.presenter.SimulationPresenter">
+    <top>
+        <VBox prefHeight="109.0" prefWidth="850.0" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="moveList" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="750.0" promptText="lista ruchów">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets left="50.0" right="50.0" top="30.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets left="5.0" />
+                    </padding>
+                    <font>
+                        <Font size="17.0" />
+                    </font></TextField>
+                <Button mnemonicParsing="false" onAction="#onSimulationStartClicked" text="Start simulation">
+                    <VBox.margin>
+                        <Insets left="50.0" top="20.0" />
+                    </VBox.margin>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <font>
+                        <Font name="Calibri Bold" size="17.0" />
+                    </font></Button>
+            </children>
+        </VBox>
+    </top>
+    <bottom>
+        <Label fx:id="moveInfoLabel" text="Opis ruchu" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="50.0" />
+            </BorderPane.margin>
+            <font>
+                <Font size="17.0" />
+            </font>
+        </Label>
+    </bottom>
+    <center>
+        <Canvas fx:id="canvasMap" height="300.0" width="300.0" BorderPane.alignment="CENTER" />
+    </center>
+
+</BorderPane>
