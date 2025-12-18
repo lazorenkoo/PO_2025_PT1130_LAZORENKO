@@ -1,65 +1,70 @@
 package agh.ics.oop;
 
 import agh.ics.oop.Simulation;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class SimulationEngine {
-    private final List<Simulation> simulations;
 
+    private final List<Simulation> simulations;
     private final List<Thread> threads = new ArrayList<>();
+
     private ExecutorService executorService;
+    private final List<Future<?>> futures = new ArrayList<>();
 
     public SimulationEngine(List<Simulation> simulations) {
         this.simulations = simulations;
     }
 
     public void runSync() {
-        for (Simulation simulation : simulations) {
-            simulation.run();
+        for (Simulation s : simulations) {
+            s.run();
         }
     }
 
     public void runAsync() {
-        threads.clear();
-        for (Simulation simulation : simulations) {
-            Thread t = new Thread(simulation);
+        for (Simulation s : simulations) {
+            Thread t = new Thread(s);
             threads.add(t);
             t.start();
         }
     }
+
+    public void runAsyncInThreadPool() {
+        if (executorService == null || executorService.isShutdown()) {
+            executorService = Executors.newFixedThreadPool(4);
+        }
+
+        futures.clear();
+        for (Simulation s : simulations) {
+            futures.add(executorService.submit(s));
+        }
+    }
+
     public void awaitSimulationsEnd() {
-        // czekamy na zwykle wątki (runAsync)
         for (Thread t : threads) {
             try {
                 t.join();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                throw new RuntimeException("Await interrupted", e);
             }
         }
         threads.clear();
 
-        // czekamy na pule wątków (runAsyncInThreadPool)
         if (executorService != null) {
             executorService.shutdown();
             try {
-                executorService.awaitTermination(10, TimeUnit.SECONDS);
+                if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                    executorService.shutdownNow();
+                }
             } catch (InterruptedException e) {
+                executorService.shutdownNow();
                 Thread.currentThread().interrupt();
             }
-            executorService = null;
         }
     }
-    public void runAsyncInThreadPool() {
-        executorService = Executors.newFixedThreadPool(4);  // 4 wątki
-        for (Simulation simulation : simulations) {
-            executorService.submit(simulation);
-        }
-    }
-
-
 }
+

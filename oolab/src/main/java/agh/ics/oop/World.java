@@ -20,15 +20,18 @@ public class World {
                 new Vector2d(3, 4)
         );
 
-        WorldMap rectangular = new RectangularMap("Rect#1", 5, 5);
-        WorldMap grassField  = new GrassField("Grass#1", 10);
-
         int simulationCount = 100;
         List<Simulation> list = new ArrayList<>();
 
         for (int i = 0; i < simulationCount; i++) {
-            list.add(new Simulation(rectangular, startPositions, moves));
-            list.add(new Simulation(grassField,  startPositions, moves));
+            var rectMap = new RectangularMap("Rect#" + i, 5, 5);
+            ((AbstractWorldMap) rectMap).addObserver(new ConsoleMapDisplay());
+
+            var grassMap = new GrassField("Grass#" + i, 10);
+            ((AbstractWorldMap) grassMap).addObserver(new ConsoleMapDisplay());
+
+            list.add(new Simulation(rectMap, startPositions, moves));
+            list.add(new Simulation(grassMap, startPositions, moves));
         }
 
         SimulationEngine engine = new SimulationEngine(list);
