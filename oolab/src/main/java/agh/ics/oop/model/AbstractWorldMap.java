@@ -5,10 +5,16 @@ import agh.ics.oop.model.util.MapVisualizer;
 import java.util.*;
 
 public abstract class AbstractWorldMap implements WorldMap {
-
+    private final String id;
     protected final Map<Vector2d, Animal> animals = new HashMap<>();
     private final List<MapChangeListener> observers = new ArrayList<>();
-
+    protected AbstractWorldMap(String id) {
+        this.id = id;
+    }
+    @Override
+    public String getId() {
+        return id;
+    }
     public void addObserver(MapChangeListener observer) {
         observers.add(observer);
     }

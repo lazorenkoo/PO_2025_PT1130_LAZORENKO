@@ -6,22 +6,23 @@ import agh.ics.oop.model.util.MapVisualizer;
 public class GrassField extends AbstractWorldMap {
 
     private final Map<Vector2d, Grass> grasses = new HashMap<>();
+    private final Random random = new Random();
 
     public GrassField(int grassCount) {
-        Random random = new Random();
+        this("GrassField", grassCount);
+    }
+    public GrassField(String id, int grassCount) {
+        super(id);
         int maxCoord = (int) Math.sqrt(grassCount * 10);
-
         int created = 0;
         while (created < grassCount) {
             int x = random.nextInt(maxCoord + 1);
             int y = random.nextInt(maxCoord + 1);
             Vector2d pos = new Vector2d(x, y);
-
-            if (grasses.containsKey(pos)) {
-                continue;
+            if (!grasses.containsKey(pos)) {
+                grasses.put(pos, new Grass(pos));
+                created++;
             }
-            grasses.put(pos, new Grass(pos));
-            created++;
         }
     }
 

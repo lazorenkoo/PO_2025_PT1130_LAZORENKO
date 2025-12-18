@@ -11,7 +11,7 @@ import agh.ics.oop.model.Vector2d;
  * @author apohllo, idzik
  */
 public interface WorldMap extends MoveValidator {
-
+    String getId();
     /**
      * Place a new animal on the map.
      *
